@@ -1,0 +1,268 @@
+5. Компоненты Head и Document
+
+5.1 Жизненный цикл React
+React - библиотека
+NextJS - фреймворк на базе React. Добавляет рендеринг, роутинг и т.д.
+React - декларативный способ описать интерфейс и его состояние.
+Основан на компонентах - строительные блоки приложения
+React (современный) - во многом состоит из функциональных компонентов. Каждый компонент - функция.
+Функция принимает свойства компонента, которые можно передать из родительского элемента, возвращает JSX-элемент
+Фокус Next - как рендерить компоненты и как их перерендерить.
+Суть - создали компонент и передали в метод render корневого компонента.
+Цикл компонента: первичный рендер, коммит - работа с DOM и обновлениями.
+Фазы компонентов:
+1. Монтирование компонента - рендер компонента
+2. Обновление компонента - динамическое изменение состояния элемента
+3. Размонтирование компонента.
+Обновление компонента происходит:
+- изменилось состояние - useState, useReducer
+- изменился глобальный контекст - useContext
+- изменился входящий props - при изменении свойств функции, передаваемых для создания компонента
+useEffect and useLayoutEffect can use with Unmounting Component, for cleaning, and ending peeling
+
+5.2 Head Component
+Head Component is placed in next/head
+Head is responsible for storing metadata
+All information in head appears in site header
+If you have several heads, next will use the last one title in the head of all
+Link element will summarize in head of site.
+If you want to use link tag like title, you can use key attribute as key={1} in different link tags
+Next add by itself viewports, meta-elements, styles, bundles etc.
+
+5.3 React Fragment
+React.Fragment allows to render components without appearing in DOM-tree root component.
+The most short way is include code in <></>
+
+5.4 Document Component
+It is need for custom html document
+
+7 Simple Components
+
+7.2 First Component
+Component is a function, whish gets some parameters and returns JSX.Element
+props is interface with properties of JSX.Element
+children - is keyword for inner components or text of element.
+index.ts in components needs for simple import.
+module.css needs for styles of components. It installs with className={styles.<element>}
+Styles isolated inside component
+
+7.3 ClassNames library
+This library merge classnames from out in one component
+This library helps to get classnames as objects (for example for active or disabled elements)
+
+7.5 HTMLProps
+For adding element attributes needs to extend props interface as DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+After this, in component needs to set className as argument, and ...props as other attributes
+In tag of element you need to case props as object with spread operator (see Button.tsx)
+
+7.6 HTMLProps Details
+DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+type DetailedHTMLProps<E extends HTMLAttributes<T>, T> = ClassAttributes<T> & E
+DetailedHTMLProps is type
+HTMLAttributes is interface with all HTML attributes
+ButtonHTMLAttributes extends HTMLAttributes<T> is interface has specific attributes for buttons
+HTMLBUttonElement is interface that extends HTMLElement
+This empty interface uses lib DOM (see in tsconfig.json)
+This and other interfaces are overloaded in react.index.d.ts. Each interface contains all necessary attributes
+
+8. Statefull components
+8.1 React Hooks
+Hooks allow to use states and other responsibilities of React without classes.
+We can devide components with divided lifecircle and state.
+We can reuse our code more comfortable way.
+We can divide components with more simple way.
+There are three main hooks in react and seven aixilary
+Main:
+useState - with state component
+useElement - ordered by effects with changing props
+useContext - allows to use global context
+Not main:
+useReducer - allows to use reduct without state.
+useCallback allows change function if enter parameters are changed.
+useMemo save function result for not rerender.
+useRef allows get link from component.
+useLayoutEffect needs for synchronization effects
+useImperativeHandle - allows to send referenses to parent components.
+useDebugValue allows to display some debug information in devtools.
+We also can write our hooks.
+
+8.2 useState
+function useState returns tuple [value of state, function for changing] = useState<state type>(first value)
+You can have several states in one component
+updating funciont of state cat get state value or arrow function with old and new state value.
+All statement must be returend as solid
+You should name function for change state with set prefix
+
+8.3 useEffect
+allows to execute not main effects
+useEffect(() => {
+    d// effect
+    return function cleanap() { cleanup }
+}, [counter])
+with [] means that useEffect will be used only once after mount or unmount
+without array means that useEffect well be used everytime after rerender with async
+with [counter] - if value is changed.
+
+8.4 Hooks rules
+Hooks must be executed from components or from user hooks
+Hooks executed only on high level of component
+
+8.5 Architecture of raiting component
+set external props and raiting value, editable, state, hover
+get raiting
+
+9. HOC Components.
+9.1 HOC
+HOC is a function that get component and returns new component.
+It uses for reusing logic.
+
+Without types example:
+
+export const HOCExampleWithoutTypes = (Component) => {
+    return function WithWrapperComponent(props) {
+        return (
+            <div> className="hoc-wrapper">
+                <Component {...props}/>
+            </div>
+        )
+    }
+}
+
+With types example:
+
+export const HOCExample = <T extends Record<string, unknown>>(Component: FunctionComponent<T>) => {
+    return function WithWrapperComponent(props: T) {
+        return (
+            <div> className="hoc-wraper">
+                <Component {...props}>
+            </div>
+        )
+    }
+}
+
+It musn't change component
+Props always set in wrapped component
+It needs to set displyay name
+It mustn't use for rendering
+
+11. Server side rendering
+
+11.1 Environment variables
+types:
+1. .env - for all environments
+2. env.local - for local development (.gitignore)
+3. .env.development - for dev environment (npm run dev)
+4. .env.production - for prod environment (npm start)
+5. .env.test.local - for local test execution (.gitignore)
+6. .env.test - for test execution
+
+all .env allow in server side rendering
+with NEXT_PUBLIC_ allows to get this variables in runtime.
+
+11.2 How SSR works?
+SSR - server side rendering
+CSR - client side rendering
+
+timeline of page loading:
+CSR
+1. CSR - load empty HTML
+2. CSR makes request for CSS and content
+3. makes request for getting JS
+4. executing JS
+5. render page for user
+SSR
+1. HTML renders on server
+2. Client gets HTML with content
+3. CSS loading
+4. Site rendered
+5. getting JS
+6. executing JS
+7. gidration of app (adding methods, handlers, elements from js code)
+The most often way to rendering by ssr is on v8 with node.js
+
+SSR minuses:
+- render for each request. It often use caching
+- app start using after loading js
+- hard settings
+- reload page with rendering
+
+SSR pluses:
+- SEO friendly
+- First Contentful Paint - faster
+- Highest performance (because of server not client rendering)
+
+Next.js gives SSR and Cache + updating cache
+
+11.3 SSR in Next.js
+Static Generation (getStaticProps(), getStaticPaths())
+Server side rendering (getServerSideProps())
+
+getStaticProps() - get static data for template generation
+use for:
+- render data available in build
+- data can be public cached (without personal data)
+- page can be indexed
+
+getStaticPaths() - get page paths for static generation
+use for:
+- page rendering with dinamic addresses
+
+getServerSideProps() - prerender for each request
+use for:
+- to work with private data
+
+12. Context
+
+12.1 useContext
+It needs for get data from component to component.
+Alternative way - composition/
+How it works:
+- wrap context in root element.
+- use functions that set context in other components
+- send context in other components
+
+Creating context:
+export interface IMyContext {
+    test: number;
+}
+
+export const MyContext = createContext<IMyContext>({ test: 1});
+
+export const MyContextProvider = ({ test, childern }: IMyContext & { childern: ReactNode }) => {
+    return <MyContext.Provider value={{ test }}>
+        {children}
+        </MyContext.Provider>
+}
+
+export const myComponent = () => {
+    const { test } = useContext(MyContext);
+}
+
+Additional opportunities:
+<MyContext.Consumer> { value => /* render something with context value*/} </MyContext.Consumer>
+MyContext.displayName = 'MyContextName'
+
+12.2 Write own context
+
+1. Get props on main page (getStaticProps) - menu, firstCategory
+2. Set this props to component Home (useState)
+3. Component Home wrapped in Layout (withLayout -> withlayoutComponent) - all props will be go through this component
+4. Set props to context (withLayoutComponent)
+5. Props data set to context provider
+6. Get props data in other component (useContext)
+
+13 Routing
+13.1 Link Component
+needs for updating page without reload
+props of type LinkProps:
+- href - path for navigation
+- as? Url - path for browser viewing
+- replace? boolean - change current element history
+- scroll? boolean - for scroll up
+- shallow? boolean - need execute getServerSideProps or not
+- passHref? boolean - get href to child
+- prefetch? boolean - early loading page data
+
+It's possible ot set href as object {pathname" '/searc', query: {q: test}}
+
+13.2 useRouter
