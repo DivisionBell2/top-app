@@ -7,6 +7,10 @@
     color: var(--primary)
 }
 
+.sortName {
+    display: none;
+}
+
 .active .sortIcon {
     display: block;
     margin-right: 8px;
