@@ -1,4 +1,4 @@
-import styles from './HhData.module.css';
+import styles from './hhData.module.css';
 import { Card } from '../Card/Card';
 import { ReactSVG as RateIcon } from 'react-svg';
 import { priceRu } from '@/helpers/helpers';
