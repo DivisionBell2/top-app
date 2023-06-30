@@ -16,5 +16,5 @@ jobs:
         name: docker.pkg.github.com/DivisionBell2/top-app/top-app
         username: ${{ secrets.DOCKER_USERNAME }}
         # token
-        password: ${{ secrets.DOCKER_PASSWROD }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
         tags: "develop"
