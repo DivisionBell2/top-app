@@ -15,6 +15,6 @@ jobs:
         registry: docker.pkg.github.com
         name: docker.pkg.github.com/DivisionBell2/top-app/top-app
         username: ${{ secrets.DOCKER_USERNAME }}
-        # token
+        # token in secrets
         password: ${{ secrets.DOCKER_PASSWORD }}
         tags: "develop"
